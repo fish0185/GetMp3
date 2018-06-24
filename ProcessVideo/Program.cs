@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ProcessVideo
 {
@@ -13,11 +14,23 @@ namespace ProcessVideo
     {
         static void Main(string[] args)
         {
-            if (args == null || args.Length == 0)
+            while (true)
             {
-                args = new[] { "https://www.youtube.com/watch?v=kfXdP7nZIiE" };
+                Console.WriteLine("Please paste the url then press Enter");
+                var url = Console.ReadLine();
+                if (url == "Q")
+                {
+                    break;
+                }
+
+                DownloadMp3(url);
             }
 
+            Console.ReadLine();
+        }
+
+        public static void DownloadMp3(string url)
+        {
             Console.InputEncoding = System.Text.Encoding.UTF8;
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var workingDir = Directory.GetCurrentDirectory();
@@ -32,7 +45,7 @@ namespace ProcessVideo
                 UseShellExecute = false,
                 FileName = "you-get",
                 WorkingDirectory = workingDir,
-                Arguments = $"  {args[0]}"
+                Arguments = $"  {url}"
             };
             var exeProcess = Process.Start(startInfo);
             var fileNameLine = "";
@@ -66,7 +79,6 @@ namespace ProcessVideo
                 }
             }
             Console.WriteLine("############## File processed #################");
-            Console.ReadLine();
         }
     }
 }
